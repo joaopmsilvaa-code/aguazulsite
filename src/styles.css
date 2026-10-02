@@ -99,3 +99,13 @@
 .reveal-ready .reveal { opacity: 0; transform: translateY(16px); transition: opacity .6s ease, transform .6s ease; }
 .reveal-ready .reveal.in { opacity: 1; transform: none; }
 @media (prefers-reduced-motion: reduce) { .reveal-ready .reveal { opacity: 1; transform: none; transition: none; } }
+
+/* Impressão / Salvar como PDF */
+@media print {
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  header, .print-hide { display: none !important; }
+  .reveal, .reveal-ready .reveal { opacity: 1 !important; transform: none !important; }
+  .animate-rise { animation: none !important; }
+  #inicio { min-height: auto; }
+  article, figure, li, form { break-inside: avoid; }
+}
