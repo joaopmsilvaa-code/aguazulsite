@@ -57,12 +57,17 @@ const NAV = [
 function useReveal() {
   useEffect(() => {
     const els = document.querySelectorAll(".reveal");
+    const showAll = () => els.forEach((el) => el.classList.add("in"));
+    if (!("IntersectionObserver" in window)) return showAll();
+    document.documentElement.classList.add("reveal-ready");
     const io = new IntersectionObserver(
       (es) => es.forEach((e) => e.isIntersecting && (e.target.classList.add("in"), io.unobserve(e.target))),
-      { threshold: 0.12 },
+      { threshold: 0.05 },
     );
     els.forEach((el) => io.observe(el));
-    return () => io.disconnect();
+    // Garantia: se a animação não disparar (ex.: prévia do editor), mostra tudo.
+    const t = window.setTimeout(showAll, 1500);
+    return () => { io.disconnect(); window.clearTimeout(t); };
   }, []);
 }
 
