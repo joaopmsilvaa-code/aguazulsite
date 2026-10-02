@@ -12,4 +12,12 @@ export default defineConfig({
     // nitro/vite builds from this
     server: { entry: "server" },
   },
+  // Publicação no Cloudflare Workers (fora do Lovable): gera o wrangler.json com este nome.
+  nitro: {
+    cloudflare: {
+      deployConfig: true,
+      nodeCompat: true,
+      wrangler: { name: "aguazulsite" },
+    },
+  },
 });
