@@ -79,8 +79,8 @@ function Arrow() {
 
 function Logo() {
   return (
-    <a href="#inicio" className="block rounded-xl bg-white px-2 py-1" aria-label="Aguazul Piscinas Santa Maria — início">
-      <img src={logoAsset.url} alt="Aguazul Piscinas Santa Maria" className="h-9 w-auto object-contain md:h-10" />
+    <a href="#inicio" className="block rounded-2xl bg-white px-3 py-1.5" aria-label="Aguazul Piscinas Santa Maria — início">
+      <img src={logoAsset.url} alt="Aguazul Piscinas Santa Maria" className="h-12 w-auto object-contain md:h-16" />
     </a>
   );
 }
@@ -97,7 +97,7 @@ function Header() {
   const solid = scrolled || open;
   return (
     <header className={`fixed inset-x-0 top-0 z-40 transition-all duration-300 ${solid ? "bg-deep/90 shadow-lift backdrop-blur-md" : "bg-transparent"}`}>
-      <div className="mx-auto flex h-18 max-w-7xl items-center justify-between px-5 py-3 lg:px-8">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-3 lg:px-8">
         <div className="flex items-center gap-8">
           <Logo />
           <nav className="hidden items-center gap-6 lg:flex" aria-label="Principal">
@@ -285,43 +285,36 @@ function Home() {
       <Header />
       <main>
         {/* HERO */}
-        <section id="inicio" className="relative overflow-hidden bg-deep pt-32 md:pt-40">
-          <div className="pointer-events-none absolute left-1/2 top-[55%] h-[600px] w-[1100px] -translate-x-1/2 rounded-full bg-[radial-gradient(closest-side,oklch(0.55_0.13_250/0.45),transparent)]" aria-hidden />
-          <div className="relative mx-auto max-w-7xl px-5 lg:px-8">
-            <div className="flex flex-wrap items-end justify-between gap-8">
-              <div className="max-w-4xl">
-                <h1 className="animate-rise text-5xl text-deep-foreground sm:text-6xl md:text-7xl lg:text-[5.5rem]">
-                  Onde os melhores momentos <span className="text-sun">acontecem.</span>
-                </h1>
-                <p className="animate-rise mt-6 max-w-xl text-lg text-deep-foreground/70" style={{ animationDelay: "80ms" }}>
-                  Piscinas de fibra para transformar seu espaço em um lugar de lazer, conforto e encontros inesquecíveis.
-                </p>
-                <div className="animate-rise mt-8 flex flex-wrap gap-3" style={{ animationDelay: "160ms" }}>
-                  <a href="#orcamento" className={btnGold}>Solicitar orçamento</a>
-                  <a href="#piscinas" className={btnGlass}>Conhecer piscinas</a>
-                </div>
-              </div>
-              <a href={MAPS_LINK} target="_blank" rel="noopener" className={`${linkArrow} animate-rise text-deep-foreground/80 hover:text-deep-foreground`} style={{ animationDelay: "200ms" }}>
+        <section id="inicio" className="relative flex min-h-[100svh] items-end overflow-hidden bg-deep pb-12 pt-36 md:pb-16">
+          <div className="absolute inset-0 scale-105"><PhotoSlot photo={HERO_PHOTO} /></div>
+          <div className="absolute inset-0 bg-[linear-gradient(90deg,oklch(0.2_0.07_263/0.92)_0%,oklch(0.2_0.07_263/0.7)_50%,oklch(0.2_0.07_263/0.35)_100%)]" aria-hidden />
+          <div className="absolute inset-0 bg-[linear-gradient(180deg,oklch(0.2_0.07_263/0.6)_0%,transparent_30%,transparent_60%,oklch(0.2_0.07_263/0.85)_100%)]" aria-hidden />
+          <div className="relative mx-auto w-full max-w-7xl px-5 lg:px-8">
+            <div className="max-w-4xl">
+              <a href={MAPS_LINK} target="_blank" rel="noopener" className={`${linkArrow} animate-rise rounded-full bg-deep/50 px-4 py-2 text-deep-foreground/90 ring-1 ring-white/15 backdrop-blur-md hover:text-deep-foreground`}>
                 <MapPin className="h-4 w-4 text-sun" aria-hidden />Santa Maria e região<Arrow />
               </a>
-            </div>
-
-            <div className="animate-rise relative mt-14 overflow-hidden rounded-t-[28px] shadow-glow md:mt-16" style={{ animationDelay: "240ms" }}>
-              <div className="aspect-[4/3] sm:aspect-[16/9] lg:aspect-[21/9]">
-                <PhotoSlot photo={HERO_PHOTO} />
+              <h1 className="animate-rise mt-6 text-5xl text-deep-foreground sm:text-6xl md:text-7xl lg:text-[5.5rem]" style={{ animationDelay: "60ms" }}>
+                Onde os melhores momentos <span className="text-sun">acontecem.</span>
+              </h1>
+              <p className="animate-rise mt-6 max-w-xl text-lg text-deep-foreground/85" style={{ animationDelay: "120ms" }}>
+                Piscinas de fibra para transformar seu espaço em um lugar de lazer, conforto e encontros inesquecíveis.
+              </p>
+              <div className="animate-rise mt-8 flex flex-wrap gap-3" style={{ animationDelay: "180ms" }}>
+                <a href="#orcamento" className={btnGold}>Solicitar orçamento</a>
+                <a href="#piscinas" className={btnGlass}>Conhecer piscinas</a>
               </div>
-              <div className="bg-hero-overlay absolute inset-0" />
-              <ul className="absolute bottom-5 left-5 right-5 flex flex-wrap gap-2 md:bottom-8 md:left-8">
-                {[[Droplets, "Piscinas de fibra"], [Wrench, "Instalação especializada"], [HeartHandshake, "Atendimento próximo"]].map(([I, t]) => {
-                  const Icon = I as typeof Droplets;
-                  return (
-                    <li key={t as string} className="inline-flex items-center gap-2 rounded-full bg-deep/70 px-4 py-2 text-sm text-deep-foreground ring-1 ring-white/15 backdrop-blur-md">
-                      <Icon className="h-4 w-4 text-sun" aria-hidden />{t as string}
-                    </li>
-                  );
-                })}
-              </ul>
             </div>
+            <ul className="animate-rise mt-14 flex flex-wrap gap-2 md:mt-20" style={{ animationDelay: "240ms" }}>
+              {[[Droplets, "Piscinas de fibra"], [Wrench, "Instalação especializada"], [HeartHandshake, "Atendimento próximo"]].map(([I, t]) => {
+                const Icon = I as typeof Droplets;
+                return (
+                  <li key={t as string} className="inline-flex items-center gap-2 rounded-full bg-deep/60 px-4 py-2 text-sm text-deep-foreground ring-1 ring-white/15 backdrop-blur-md">
+                    <Icon className="h-4 w-4 text-sun" aria-hidden />{t as string}
+                  </li>
+                );
+              })}
+            </ul>
           </div>
         </section>
 
