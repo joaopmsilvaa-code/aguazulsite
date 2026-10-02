@@ -474,7 +474,7 @@ function Home() {
         <MessageCircle className="h-6 w-6" />
       </a>
 
-      {model !== null && <ModelModal model={MODELS[model]} index={model} onClose={() => setModel(null)} />}
+      {model !== null && MODELS[model] && <ModelModal model={MODELS[model]!} index={model} onClose={() => setModel(null)} />}
       {lb !== null && <Lightbox index={lb} setIndex={setLb} onClose={() => setLb(null)} />}
     </div>
   );
