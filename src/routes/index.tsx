@@ -291,7 +291,7 @@ function Home() {
       <main>
         {/* HERO */}
         <section id="inicio" className="relative flex min-h-[100svh] items-end overflow-hidden bg-deep pb-12 pt-36 md:pb-16">
-          <div className="absolute inset-0 scale-105"><PhotoSlot photo={HERO_PHOTO} /></div>
+          <div className="absolute inset-0"><PhotoSlot photo={HERO_PHOTO} className="object-[center_70%]" /></div>
           <div className="absolute inset-0 bg-[linear-gradient(90deg,oklch(0.2_0.07_263/0.92)_0%,oklch(0.2_0.07_263/0.7)_50%,oklch(0.2_0.07_263/0.35)_100%)]" aria-hidden />
           <div className="absolute inset-0 bg-[linear-gradient(180deg,oklch(0.2_0.07_263/0.6)_0%,transparent_30%,transparent_60%,oklch(0.2_0.07_263/0.85)_100%)]" aria-hidden />
           <div className="relative mx-auto w-full max-w-7xl px-5 lg:px-8">

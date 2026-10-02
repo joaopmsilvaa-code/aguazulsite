@@ -25,8 +25,8 @@ export type PoolModel = {
 };
 
 export const HERO_PHOTO: Photo = {
-  src: "/images/piscina-destaque.png",
-  alt: "Piscina azul cercada de coqueiros em dia de sol",
+  src: "https://images.unsplash.com/photo-1629319890842-323e7ac7347d?w=2400&q=80&auto=format&fit=crop",
+  alt: "Piscina de água azul-turquesa com coqueiros e céu azul",
 };
 
 const HAWAI: Photo = { src: "/images/piscina-hawai.jpg", alt: "Piscina de fibra Aguazul modelo Hawaí instalada em área coberta" };
