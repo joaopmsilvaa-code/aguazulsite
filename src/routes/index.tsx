@@ -11,7 +11,8 @@ import {
   HERO_PHOTO, MODELS, GALLERY, REVIEWS, LIFESTYLE, WATER_PHOTO, type PoolModel,
 } from "@/lib/site";
 
-const TITLE = "Aguazul Piscinas Santa Maria | Piscinas de fibra em Santa Maria - RS";
+const TITLE = "Aguazul";
+const SHARE_TITLE = "Aguazul Piscinas Santa Maria | Piscinas de fibra em Santa Maria - RS";
 const DESC =
   "Piscinas de fibra em Santa Maria e região. Conheça os modelos, veja instalações reais e solicite seu orçamento com a Aguazul Piscinas.";
 
@@ -37,7 +38,7 @@ export const Route = createFileRoute("/")({
     meta: [
       { title: TITLE },
       { name: "description", content: DESC },
-      { property: "og:title", content: TITLE },
+      { property: "og:title", content: SHARE_TITLE },
       { property: "og:description", content: DESC },
       { property: "og:type", content: "website" },
       { property: "og:locale", content: "pt_BR" },
