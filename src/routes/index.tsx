@@ -8,7 +8,7 @@ import { PhotoSlot } from "@/components/PhotoSlot";
 import logoAsset from "@/assets/aguazul-logo.jpg.asset.json";
 import {
   waLink, PHONE_DISPLAY, MAPS_LINK, MAPS_EMBED, MAPS_DIRECTIONS, INSTAGRAM,
-  HERO_PHOTO, MODELS, GALLERY, REVIEWS, type PoolModel,
+  HERO_PHOTO, MODELS, GALLERY, REVIEWS, LIFESTYLE, WATER_PHOTO, type PoolModel,
 } from "@/lib/site";
 
 const TITLE = "Aguazul Piscinas Santa Maria | Piscinas de fibra em Santa Maria - RS";
@@ -339,6 +339,13 @@ function Home() {
             <h2 className="mt-3 text-4xl text-primary md:text-6xl">Mais que uma piscina. Um novo jeito de aproveitar sua casa.</h2>
             <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground">Uma piscina muda a rotina da casa: o quintal vira ponto de encontro, os fins de semana ganham sol e água, e a família e os amigos têm mais motivos para ficar juntos.</p>
           </div>
+          <div className="mt-14 grid gap-4 md:mt-16 md:grid-cols-3">
+            {LIFESTYLE.map((p, i) => (
+              <div key={p.src} className={`reveal overflow-hidden rounded-[28px] ${i === 1 ? "aspect-[4/5] md:-mt-8 md:shadow-glow" : "aspect-[4/5] md:mt-8"}`}>
+                <PhotoSlot photo={p} className="transition duration-700 hover:scale-[1.03]" />
+              </div>
+            ))}
+          </div>
         </section>
 
         {/* MODELOS */}
@@ -446,8 +453,10 @@ function Home() {
                 <a href={INSTAGRAM} target="_blank" rel="noopener" className={btnLight}><Instagram className="h-4 w-4" />Instagram</a>
               </div>
             </div>
-            <div className="flex aspect-[5/4] items-center justify-center rounded-3xl bg-deep p-10 shadow-glow">
-              <div className="rounded-2xl bg-white p-6">
+            <div className="relative flex aspect-[5/4] items-center justify-center overflow-hidden rounded-3xl bg-deep p-10 shadow-glow">
+              <div className="absolute inset-0"><PhotoSlot photo={WATER_PHOTO} /></div>
+              <div className="absolute inset-0 bg-deep/35" aria-hidden />
+              <div className="relative rounded-2xl bg-white p-6 shadow-lift">
                 <img src={logoAsset.url} alt="Logo Aguazul Piscinas Santa Maria" className="h-auto w-full max-w-xs" />
               </div>
             </div>

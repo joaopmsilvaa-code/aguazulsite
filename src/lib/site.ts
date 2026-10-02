@@ -55,3 +55,18 @@ export const REVIEWS: { text: string; author?: string }[] = [
   { text: "Empresa séria, entrega o que promete..." },
   { text: "Excelente estamos satisfeitos com o serviço..." },
 ];
+
+/** Fotos ilustrativas gratuitas (Unsplash) para ambientação — não são instalações da Aguazul. */
+const unsplash = (id: string, w = 1200) =>
+  `https://images.unsplash.com/photo-${id}?w=${w}&q=80&auto=format&fit=crop`;
+
+export const LIFESTYLE: Photo[] = [
+  { src: unsplash("1466378284817-a6b7fd50cc68"), alt: "Amigos se divertindo na piscina com boia de flamingo" },
+  { src: unsplash("1706164971299-cfa23ec76083"), alt: "Casa moderna com piscina no quintal" },
+  { src: unsplash("1564013799919-ab600027ffc6"), alt: "Casa branca com piscina e jardim" },
+];
+
+export const WATER_PHOTO: Photo = {
+  src: unsplash("1714203172156-4c2f8c767a37", 1400),
+  alt: "Água azul de piscina ao lado de deck de madeira",
+};
