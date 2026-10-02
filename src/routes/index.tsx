@@ -5,6 +5,7 @@ import {
   Gem, HeartHandshake, Wrench, Award, Droplets, ShieldCheck, Sun, Send,
 } from "lucide-react";
 import { PhotoSlot } from "@/components/PhotoSlot";
+import logoAsset from "@/assets/aguazul-logo.jpg.asset.json";
 import {
   waLink, PHONE_DISPLAY, MAPS_LINK, MAPS_EMBED, MAPS_DIRECTIONS, INSTAGRAM,
   MODELS, GALLERY, REVIEWS, type PoolModel,
@@ -64,23 +65,16 @@ function useReveal() {
   }, []);
 }
 
-const btn = "inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2";
-const btnSun = `${btn} bg-sun text-sun-foreground hover:brightness-95 hover:-translate-y-0.5`;
+const btn = "inline-flex items-center justify-center gap-2 rounded-lg px-6 py-3 text-sm font-semibold transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2";
+const btnSun = `${btn} bg-sun text-sun-foreground shadow-soft hover:brightness-95 hover:-translate-y-0.5`;
 const btnPrimary = `${btn} bg-primary text-primary-foreground hover:bg-deep hover:-translate-y-0.5`;
 const btnGhostLight = `${btn} border border-deep-foreground/40 text-deep-foreground hover:bg-deep-foreground/10`;
 const btnOutline = `${btn} border border-primary/25 text-primary hover:bg-secondary`;
 
 function Logo({ light }: { light?: boolean }) {
-  // Substituir pelo logo oficial quando enviado.
   return (
-    <a href="#inicio" className="flex items-center gap-2" aria-label="Aguazul Piscinas Santa Maria — início">
-      <span className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-sun">
-        <Droplets className="h-5 w-5" aria-hidden />
-      </span>
-      <span className={`leading-none ${light ? "text-deep-foreground" : "text-primary"}`}>
-        <span className="block font-display text-xl font-semibold">Aguazul</span>
-        <span className="block text-[10px] font-semibold uppercase tracking-[0.2em] opacity-80">Piscinas · Santa Maria</span>
-      </span>
+    <a href="#inicio" className={`block ${light ? "rounded bg-card p-1" : ""}`} aria-label="Aguazul Piscinas Santa Maria — início">
+      <img src={logoAsset.url} alt="Aguazul Piscinas Santa Maria" className="h-12 w-auto object-contain md:h-14" />
     </a>
   );
 }
@@ -96,12 +90,12 @@ function Header() {
   }, []);
   const solid = scrolled || open;
   return (
-    <header className={`fixed inset-x-0 top-0 z-40 transition-all duration-300 ${solid ? "bg-card/95 shadow-soft backdrop-blur" : "bg-transparent"}`}>
-      <div className="mx-auto flex h-18 max-w-7xl items-center justify-between px-5 py-3 lg:px-8">
-        <Logo light={!solid} />
+    <header className={`fixed inset-x-0 top-0 z-40 border-b border-border/70 bg-card/95 transition-all duration-300 backdrop-blur ${solid ? "shadow-soft" : ""}`}>
+      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-5 lg:px-8">
+        <Logo />
         <nav className="hidden items-center gap-7 lg:flex" aria-label="Principal">
           {NAV.map(([l, h]) => (
-            <a key={h} href={h} className={`text-sm font-medium transition-colors ${solid ? "text-foreground/80 hover:text-primary" : "text-deep-foreground/90 hover:text-deep-foreground"}`}>{l}</a>
+            <a key={h} href={h} className="text-sm font-medium text-foreground/75 transition-colors hover:text-primary">{l}</a>
           ))}
           <a href="#orcamento" className={btnSun}>Solicitar orçamento</a>
         </nav>
@@ -110,7 +104,7 @@ function Header() {
             <MessageCircle className="h-4 w-4" aria-hidden /> WhatsApp
           </a>
           <button onClick={() => setOpen(!open)} aria-label={open ? "Fechar menu" : "Abrir menu"} aria-expanded={open}
-            className={`rounded-full p-2 ${solid ? "text-primary" : "text-deep-foreground"}`}>
+            className="rounded-md p-2 text-primary">
             {open ? <X /> : <Menu />}
           </button>
         </div>
@@ -260,28 +254,41 @@ function Home() {
       <Header />
       <main>
         {/* HERO */}
-        <section id="inicio" className="relative flex min-h-[92vh] items-end overflow-hidden bg-deep">
-          <div className="absolute inset-0"><PhotoSlot photo={{ alt: "Piscina de fibra instalada pela Aguazul em Santa Maria" }} className="opacity-30" /></div>
+        <section id="inicio" className="relative flex min-h-[88vh] items-center overflow-hidden bg-deep pt-20">
+          <div className="absolute inset-0"><PhotoSlot photo={{ alt: "Piscina de fibra instalada pela Aguazul em Santa Maria" }} className="opacity-15" /></div>
           <div className="bg-hero-overlay absolute inset-0" />
-          <div className="relative mx-auto w-full max-w-7xl px-5 pb-20 pt-32 lg:px-8">
-            <p className="animate-rise inline-flex items-center gap-2 rounded-full bg-deep-foreground/10 px-4 py-1.5 text-xs font-semibold text-deep-foreground backdrop-blur">
-              <MapPin className="h-3.5 w-3.5 text-sun" />Atendimento em Santa Maria e região
-            </p>
-            <h1 className="animate-rise mt-6 max-w-3xl text-4xl font-medium leading-[1.05] text-deep-foreground md:text-7xl" style={{ animationDelay: "80ms" }}>
-              Seu lugar ao sol começa com a <em className="text-sun">piscina certa.</em>
-            </h1>
-            <p className="animate-rise mt-6 max-w-xl text-lg text-deep-foreground/85" style={{ animationDelay: "160ms" }}>
-              Piscinas de fibra para transformar seu espaço em um verdadeiro lugar de lazer, conforto e momentos inesquecíveis.
-            </p>
-            <div className="animate-rise mt-9 flex flex-wrap gap-3" style={{ animationDelay: "240ms" }}>
-              <a href="#orcamento" className={btnSun}>Solicitar orçamento</a>
-              <a href={waLink()} target="_blank" rel="noopener" className={btnGhostLight}><MessageCircle className="h-4 w-4" />Falar no WhatsApp</a>
+          <div className="relative mx-auto grid w-full max-w-7xl items-center gap-12 px-5 py-20 lg:grid-cols-[1.15fr_.85fr] lg:px-8">
+            <div>
+              <p className="animate-rise inline-flex items-center gap-2 border-l-2 border-sun pl-3 text-xs font-semibold uppercase tracking-widest text-deep-foreground">
+                <MapPin className="h-3.5 w-3.5 text-sun" />Santa Maria e região
+              </p>
+              <h1 className="animate-rise mt-7 max-w-3xl text-5xl font-normal leading-[.95] text-deep-foreground md:text-7xl lg:text-8xl" style={{ animationDelay: "80ms" }}>
+                Onde os melhores momentos <em className="text-sun">acontecem.</em>
+              </h1>
+              <p className="animate-rise mt-7 max-w-xl text-lg leading-relaxed text-deep-foreground/85" style={{ animationDelay: "160ms" }}>
+                Piscinas de fibra para transformar seu espaço em um lugar de lazer, conforto e encontros inesquecíveis.
+              </p>
+              <div className="animate-rise mt-9 flex flex-wrap gap-3" style={{ animationDelay: "240ms" }}>
+                <a href="#orcamento" className={btnSun}>Solicitar orçamento</a>
+                <a href="#piscinas" className={btnGhostLight}>Conhecer piscinas</a>
+              </div>
+              <div className="animate-rise mt-12 flex flex-wrap gap-x-8 gap-y-3 text-sm text-deep-foreground/80" style={{ animationDelay: "320ms" }}>
+                <span className="inline-flex items-center gap-2"><Droplets className="h-4 w-4 text-sun" />Piscinas de fibra</span>
+                <span className="inline-flex items-center gap-2"><Wrench className="h-4 w-4 text-sun" />Instalação especializada</span>
+                <span className="inline-flex items-center gap-2"><HeartHandshake className="h-4 w-4 text-sun" />Atendimento próximo</span>
+              </div>
+            </div>
+            <div className="animate-rise hidden justify-end lg:flex" style={{ animationDelay: "180ms" }}>
+              <div className="rotate-2 border border-deep-foreground/20 bg-card p-5 shadow-lift transition-transform duration-500 hover:rotate-0">
+                <img src={logoAsset.url} alt="Logo Aguazul Piscinas Santa Maria" className="h-auto w-full max-w-sm" />
+                <p className="mt-4 border-t pt-4 text-center text-sm font-medium text-primary">Piscinas de fibra em Santa Maria e região</p>
+              </div>
             </div>
           </div>
         </section>
 
         {/* TRUST */}
-        <section aria-label="Diferenciais rápidos" className="border-b bg-card">
+        <section aria-label="Diferenciais rápidos" className="border-b border-border bg-card">
           <ul className="mx-auto grid max-w-7xl grid-cols-2 gap-6 px-5 py-8 md:grid-cols-4 lg:px-8">
             {[[Droplets, "Piscinas de fibra"], [Wrench, "Instalação especializada"], [HeartHandshake, "Atendimento personalizado"], [ShieldCheck, "Orçamento sem compromisso"]].map(([I, t]) => {
               const Icon = I as typeof Droplets;
@@ -295,7 +302,7 @@ function Home() {
         </section>
 
         {/* TRANSFORME */}
-        <section className="mx-auto grid max-w-7xl items-center gap-12 px-5 py-24 md:grid-cols-12 lg:px-8">
+        <section className="mx-auto grid max-w-7xl items-center gap-12 px-5 py-20 md:grid-cols-12 lg:px-8">
           <div className="reveal md:col-span-5">
             <p className="eyebrow">Transforme seu espaço</p>
             <h2 className="mt-3 text-3xl font-medium text-primary md:text-5xl">Mais que uma piscina. Um novo jeito de aproveitar sua casa.</h2>
@@ -303,8 +310,8 @@ function Home() {
             <a href="#piscinas" className={`${btnPrimary} mt-8`}>Conhecer piscinas</a>
           </div>
           <div className="reveal grid grid-cols-5 gap-4 md:col-span-7">
-            <div className="col-span-3 aspect-[3/4] overflow-hidden rounded-2xl shadow-lift"><PhotoSlot photo={{ alt: "Piscina instalada em área externa" }} /></div>
-            <div className="col-span-2 mt-16 aspect-[3/4] overflow-hidden rounded-2xl"><PhotoSlot photo={{ alt: "Família aproveitando a piscina" }} /></div>
+            <div className="col-span-3 aspect-[3/4] overflow-hidden rounded-lg shadow-lift"><PhotoSlot photo={{ alt: "Piscina instalada em área externa" }} /></div>
+            <div className="col-span-2 mt-16 aspect-[3/4] overflow-hidden rounded-lg"><PhotoSlot photo={{ alt: "Família aproveitando a piscina" }} /></div>
           </div>
         </section>
 
@@ -314,7 +321,7 @@ function Home() {
             <SectionHead eyebrow="Modelos" title="Encontre a piscina ideal para o seu espaço" text="Diferentes formatos e tamanhos para cada tipo de quintal." />
             <div className="grid gap-6 md:grid-cols-3">
               {MODELS.map((m, i) => (
-                <article key={m.id} className="reveal group overflow-hidden rounded-2xl bg-card shadow-soft transition duration-300 hover:-translate-y-1 hover:shadow-lift">
+                 <article key={m.id} className="reveal group overflow-hidden rounded-lg border bg-card shadow-soft transition duration-300 hover:-translate-y-1 hover:shadow-lift">
                   <div className="aspect-[4/3] overflow-hidden"><PhotoSlot photo={m.photos[0]} className="transition duration-500 group-hover:scale-[1.03]" /></div>
                   <div className="p-6">
                     <h3 className="text-2xl text-primary">{m.name ?? `Modelo ${i + 1}`}</h3>
@@ -330,7 +337,7 @@ function Home() {
         {/* DIFERENCIAIS */}
         <section id="diferenciais" className="mx-auto max-w-7xl px-5 py-24 lg:px-8">
           <SectionHead eyebrow="Diferenciais" title="Por que escolher a Aguazul Piscinas?" />
-          <div className="grid gap-px overflow-hidden rounded-2xl border bg-border md:grid-cols-4">
+           <div className="grid gap-px overflow-hidden rounded-lg border bg-border md:grid-cols-4">
             {[
               [Gem, "Qualidade", "Piscinas pensadas para unir beleza, resistência e praticidade."],
               [HeartHandshake, "Atendimento", "Atendimento próximo para ajudar você a escolher a solução ideal."],
@@ -387,7 +394,7 @@ function Home() {
             </div>
             <div className="grid gap-5 md:col-span-8 md:grid-cols-2">
               {REVIEWS.map((r, i) => (
-                <figure key={i} className={`reveal rounded-2xl border bg-card p-7 shadow-soft ${i === 0 ? "md:col-span-2" : ""}`}>
+                 <figure key={i} className={`reveal rounded-lg border bg-card p-7 shadow-soft ${i === 0 ? "md:col-span-2" : ""}`}>
                   <div className="flex text-sun">{[0, 1, 2, 3, 4].map((s) => <Star key={s} className="h-4 w-4 fill-current" />)}</div>
                   <blockquote className="mt-4 font-display text-xl leading-snug text-primary">“{r.text}”</blockquote>
                   <figcaption className="mt-4 text-sm text-muted-foreground">{r.author ?? "Cliente Aguazul"} · via Google</figcaption>
@@ -400,7 +407,7 @@ function Home() {
         {/* SOBRE */}
         <section className="bg-secondary py-24">
           <div className="mx-auto grid max-w-7xl items-center gap-12 px-5 md:grid-cols-2 lg:px-8">
-            <div className="reveal aspect-[5/4] overflow-hidden rounded-2xl shadow-lift"><PhotoSlot photo={{ alt: "Loja da Aguazul Piscinas em Santa Maria" }} /></div>
+            <div className="reveal aspect-[5/4] overflow-hidden rounded-lg shadow-lift"><PhotoSlot photo={{ alt: "Loja da Aguazul Piscinas em Santa Maria" }} /></div>
             <div className="reveal">
               <p className="eyebrow">Sobre nós</p>
               <h2 className="mt-3 text-3xl font-medium text-primary md:text-5xl">Conheça a Aguazul Piscinas Santa Maria</h2>
@@ -474,7 +481,7 @@ function Home() {
         <MessageCircle className="h-6 w-6" />
       </a>
 
-      {model !== null && MODELS[model] && <ModelModal model={MODELS[model]!} index={model} onClose={() => setModel(null)} />}
+      {model !== null && MODELS[model] && <ModelModal model={MODELS[model]} index={model} onClose={() => setModel(null)} />}
       {lb !== null && <Lightbox index={lb} setIndex={setLb} onClose={() => setLb(null)} />}
     </div>
   );
