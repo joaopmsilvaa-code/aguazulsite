@@ -2,7 +2,7 @@ import { ImageIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { Photo } from "@/lib/site";
 
-export function PhotoSlot({ photo = { alt: "" }, className }: { photo?: Photo; className?: string }) {
+export function PhotoSlot({ photo = { alt: "" }, className }: { photo?: Photo | undefined; className?: string | undefined }) {
   if (photo.src) {
     return (
       <img
