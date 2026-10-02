@@ -5,7 +5,7 @@ import {
   Send,
 } from "lucide-react";
 import { PhotoSlot } from "@/components/PhotoSlot";
-import logoAsset from "@/assets/aguazul-logo.jpg.asset.json";
+const LOGO_SRC = "/images/aguazul-logo.png";
 import {
   waLink, PHONE_DISPLAY, MAPS_LINK, MAPS_EMBED, MAPS_DIRECTIONS, INSTAGRAM,
   HERO_PHOTO, MODELS, GALLERY, REVIEWS, LIFESTYLE, WATER_PHOTO, type PoolModel,
@@ -85,7 +85,7 @@ function Arrow() {
 function Logo() {
   return (
     <a href="#inicio" className="block rounded-2xl bg-white px-3 py-1.5" aria-label="Aguazul Piscinas Santa Maria — início">
-      <img src={logoAsset.url} alt="Aguazul Piscinas Santa Maria" className="h-12 w-auto object-contain md:h-16" />
+      <img src={LOGO_SRC} alt="Aguazul Piscinas Santa Maria" className="h-12 w-auto object-contain md:h-16" />
     </a>
   );
 }
@@ -457,7 +457,7 @@ function Home() {
               <div className="absolute inset-0"><PhotoSlot photo={WATER_PHOTO} /></div>
               <div className="absolute inset-0 bg-deep/35" aria-hidden />
               <div className="relative rounded-2xl bg-white p-6 shadow-lift">
-                <img src={logoAsset.url} alt="Logo Aguazul Piscinas Santa Maria" className="h-auto w-full max-w-xs" />
+                <img src={LOGO_SRC} alt="Logo Aguazul Piscinas Santa Maria" className="h-auto w-full max-w-xs" />
               </div>
             </div>
           </div>
