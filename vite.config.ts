@@ -17,7 +17,7 @@ export default defineConfig({
     cloudflare: {
       deployConfig: true,
       nodeCompat: true,
-      wrangler: { name: "aguazulsite" },
+      wrangler: { name: "aguazulsite", workers_dev: true },
     },
   },
 });
