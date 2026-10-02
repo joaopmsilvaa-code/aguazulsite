@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent, type RefObject } from "react";
 import {
   Menu, X, Check, Star, MapPin, Phone, Instagram, MessageCircle, ChevronLeft, ChevronRight, ArrowRight,
   Send,
@@ -56,19 +56,53 @@ const NAV = [
 
 function useReveal() {
   useEffect(() => {
-    const els = document.querySelectorAll(".reveal");
+    const els = document.querySelectorAll(".reveal, .reveal-zoom");
     const showAll = () => els.forEach((el) => el.classList.add("in"));
     if (!("IntersectionObserver" in window)) return showAll();
     document.documentElement.classList.add("reveal-ready");
+    let fired = false;
     const io = new IntersectionObserver(
-      (es) => es.forEach((e) => e.isIntersecting && (e.target.classList.add("in"), io.unobserve(e.target))),
-      { threshold: 0.05 },
+      (es) => {
+        fired = true;
+        es.forEach((e) => e.isIntersecting && (e.target.classList.add("in"), io.unobserve(e.target)));
+      },
+      { threshold: 0.12, rootMargin: "0px 0px -8% 0px" },
     );
     els.forEach((el) => io.observe(el));
-    // Garantia: se a animação não disparar (ex.: prévia do editor), mostra tudo.
-    const t = window.setTimeout(showAll, 1500);
+    // Garantia: se o observador nunca disparar (ex.: prévia do editor), mostra tudo.
+    const t = window.setTimeout(() => !fired && showAll(), 1500);
     return () => { io.disconnect(); window.clearTimeout(t); };
   }, []);
+}
+
+/** Parallax do topo e barra de progresso de leitura, num único loop de rolagem. */
+function useScrollMotion(heroBg: RefObject<HTMLDivElement | null>, heroContent: RefObject<HTMLDivElement | null>, progress: RefObject<HTMLDivElement | null>) {
+  useEffect(() => {
+    const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      const y = window.scrollY;
+      const vh = window.innerHeight;
+      const max = document.documentElement.scrollHeight - vh;
+      if (progress.current) progress.current.style.transform = `scaleX(${max > 0 ? Math.min(1, y / max) : 0})`;
+      if (still || y > vh * 1.2) return;
+      if (heroBg.current) heroBg.current.style.transform = `translate3d(0, ${y * 0.35}px, 0) scale(${1.08 + y / vh * 0.06})`;
+      if (heroContent.current) {
+        heroContent.current.style.transform = `translate3d(0, ${y * 0.18}px, 0)`;
+        heroContent.current.style.opacity = String(Math.max(0, 1 - y / (vh * 0.75)));
+      }
+    };
+    const onScroll = () => { if (!frame) frame = requestAnimationFrame(update); };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      cancelAnimationFrame(frame);
+    };
+  }, [heroBg, heroContent, progress]);
 }
 
 const btn = "inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2";
@@ -282,19 +316,24 @@ function Stars({ size = "h-4 w-4" }: { size?: string }) {
 
 function Home() {
   useReveal();
+  const heroBg = useRef<HTMLDivElement>(null);
+  const heroContent = useRef<HTMLDivElement>(null);
+  const progress = useRef<HTMLDivElement>(null);
+  useScrollMotion(heroBg, heroContent, progress);
   const [model, setModel] = useState<number | null>(null);
   const [lb, setLb] = useState<number | null>(null);
 
   return (
     <div className="min-h-screen">
+      <div ref={progress} className="print-hide fixed inset-x-0 top-0 z-50 h-0.5 origin-left scale-x-0 bg-sun" aria-hidden />
       <Header />
       <main>
         {/* HERO */}
         <section id="inicio" className="relative flex min-h-[100svh] items-end overflow-hidden bg-deep pb-12 pt-36 md:pb-16">
-          <div className="absolute inset-0"><PhotoSlot photo={HERO_PHOTO} className="object-[center_70%]" /></div>
+          <div ref={heroBg} className="absolute inset-0 will-change-transform"><PhotoSlot photo={HERO_PHOTO} className="object-[center_70%]" /></div>
           <div className="absolute inset-0 bg-[linear-gradient(90deg,oklch(0.2_0.07_263/0.92)_0%,oklch(0.2_0.07_263/0.7)_50%,oklch(0.2_0.07_263/0.35)_100%)]" aria-hidden />
           <div className="absolute inset-0 bg-[linear-gradient(180deg,oklch(0.2_0.07_263/0.6)_0%,transparent_30%,transparent_60%,oklch(0.2_0.07_263/0.85)_100%)]" aria-hidden />
-          <div className="relative mx-auto w-full max-w-7xl px-5 lg:px-8">
+          <div ref={heroContent} className="relative mx-auto w-full max-w-7xl px-5 will-change-transform lg:px-8">
             <div className="max-w-4xl">
               <a href={MAPS_LINK} target="_blank" rel="noopener" className={`${linkArrow} animate-rise rounded-full bg-deep/50 px-4 py-2 text-deep-foreground/90 ring-1 ring-white/15 backdrop-blur-md hover:text-deep-foreground`}>
                 <MapPin className="h-4 w-4 text-sun" aria-hidden />Santa Maria e região<Arrow />
@@ -320,9 +359,9 @@ function Home() {
 
         {/* TRUST */}
         <section aria-label="Diferenciais rápidos" className="border-b border-border">
-          <ul className="mx-auto grid max-w-7xl grid-cols-2 px-5 md:grid-cols-4 md:divide-x md:divide-border lg:px-8">
+          <ul className="stagger mx-auto grid max-w-7xl grid-cols-2 px-5 md:grid-cols-4 md:divide-x md:divide-border lg:px-8">
             {["Piscinas de fibra", "Instalação especializada", "Atendimento personalizado", "Orçamento sem compromisso"].map((t) => (
-              <li key={t} className="px-2 py-8 text-center font-display text-lg font-medium tracking-[-0.02em] text-primary md:py-10">{t}</li>
+              <li key={t} className="reveal px-2 py-8 text-center font-display text-lg font-medium tracking-[-0.02em] text-primary md:py-10">{t}</li>
             ))}
           </ul>
         </section>
@@ -334,9 +373,9 @@ function Home() {
             <h2 className="mt-3 text-4xl text-primary md:text-6xl">Mais que uma piscina. Um novo jeito de aproveitar sua casa.</h2>
             <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground">Uma piscina muda a rotina da casa: o quintal vira ponto de encontro, os fins de semana ganham sol e água, e a família e os amigos têm mais motivos para ficar juntos.</p>
           </div>
-          <div className="mt-14 grid gap-4 md:mt-16 md:grid-cols-3">
+          <div className="stagger mt-14 grid gap-4 md:mt-16 md:grid-cols-3">
             {LIFESTYLE.map((p, i) => (
-              <div key={p.src} className={`reveal overflow-hidden rounded-[28px] ${i === 1 ? "aspect-[4/5] md:-mt-8 md:shadow-glow" : "aspect-[4/5] md:mt-8"}`}>
+              <div key={p.src} className={`reveal-zoom overflow-hidden rounded-[28px] ${i === 1 ? "aspect-[4/5] md:-mt-8 md:shadow-glow" : "aspect-[4/5] md:mt-8"}`}>
                 <PhotoSlot photo={p} className="transition duration-700 hover:scale-[1.03]" />
               </div>
             ))}
@@ -347,11 +386,11 @@ function Home() {
         <section id="piscinas" className="mx-auto max-w-7xl px-5 py-24 md:py-32 lg:px-8">
           <SectionHead eyebrow="Modelos" title="Encontre a piscina ideal para o seu espaço"
             text="Diferentes formatos e tamanhos para cada tipo de quintal." link={{ label: "Pedir orçamento", href: "#orcamento" }} />
-          <div className="grid gap-6 md:grid-cols-2">
+          <div className="stagger grid gap-6 md:grid-cols-2">
             {MODELS.map((m, i) => (
               <article key={m.id} className="reveal group overflow-hidden rounded-[28px] bg-card ring-1 ring-border transition duration-300 hover:-translate-y-1 hover:shadow-lift">
                 <button onClick={() => setModel(i)} className="block w-full text-left" aria-label={`Ver detalhes da piscina ${m.name}`}>
-                  <div className="aspect-square overflow-hidden"><PhotoSlot photo={m.photos[0]} className="transition duration-700 group-hover:scale-[1.03]" /></div>
+                  <div className="reveal-zoom aspect-square overflow-hidden"><PhotoSlot photo={m.photos[0]} className="transition duration-700 group-hover:scale-[1.03]" /></div>
                   <div className="flex items-end justify-between gap-6 p-6 md:p-8">
                     <div>
                       <h3 className="text-3xl text-primary md:text-4xl">{m.name}</h3>
@@ -372,11 +411,11 @@ function Home() {
               <p className="text-sm font-medium text-sun">Diferenciais</p>
               <h2 className="mt-3 text-4xl text-deep-foreground md:text-6xl">Por que escolher a Aguazul Piscinas?</h2>
               <p className="mt-6 max-w-md text-lg text-deep-foreground/70">Do primeiro contato à instalação, você conta com uma equipe que acompanha cada etapa.</p>
-              <div className="mt-10 hidden aspect-[4/3] overflow-hidden rounded-[28px] md:block">
+              <div className="reveal-zoom mt-10 hidden aspect-[4/3] overflow-hidden rounded-[28px] md:block">
                 <PhotoSlot photo={MODELS[1].photos[0]} />
               </div>
             </div>
-            <ol className="md:col-span-7">
+            <ol className="stagger md:col-span-7">
               {[
                 ["Qualidade", "Piscinas pensadas para unir beleza, resistência e praticidade."],
                 ["Atendimento", "Atendimento próximo para ajudar você a escolher a solução ideal."],
@@ -400,9 +439,9 @@ function Home() {
           <SectionHead eyebrow="Galeria" title="Piscinas que já transformaram espaços"
             text="Veja algumas instalações realizadas pela Aguazul."
             link={{ label: "@aguazulpiscinas_santa_maria", href: INSTAGRAM, external: true }} />
-          <div className="grid gap-4 md:grid-cols-3">
+          <div className="stagger grid gap-4 md:grid-cols-3">
             {GALLERY.map((p, i) => (
-              <button key={i} onClick={() => setLb(i)} aria-label={`Ampliar: ${p.alt}`} className="reveal group aspect-square overflow-hidden rounded-[28px]">
+              <button key={i} onClick={() => setLb(i)} aria-label={`Ampliar: ${p.alt}`} className="reveal-zoom group aspect-square overflow-hidden rounded-[28px]">
                 <PhotoSlot photo={p} className="transition duration-700 group-hover:scale-[1.03]" />
               </button>
             ))}
@@ -421,7 +460,7 @@ function Home() {
           <div className="mx-auto max-w-7xl px-5 lg:px-8">
             <SectionHead eyebrow="Avaliações no Google" title="Quem já tem, recomenda."
               link={{ label: "Ver todas as avaliações", href: MAPS_LINK, external: true }} />
-            <div className="grid gap-4 md:grid-cols-3">
+            <div className="stagger grid gap-4 md:grid-cols-3">
               <div className="reveal flex flex-col justify-between rounded-3xl bg-deep p-8 text-deep-foreground md:row-span-2">
                 <Stars size="h-5 w-5" />
                 <div className="mt-10">
