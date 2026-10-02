@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState, type FormEvent } from "react";
 import {
   Menu, X, Check, Star, MapPin, Phone, Instagram, MessageCircle, ChevronLeft, ChevronRight, ArrowRight,
-  Gem, HeartHandshake, Wrench, Award, Droplets, ShieldCheck, Send,
+  Send,
 } from "lucide-react";
 import { PhotoSlot } from "@/components/PhotoSlot";
 import logoAsset from "@/assets/aguazul-logo.jpg.asset.json";
@@ -310,30 +310,20 @@ function Home() {
                 <a href="#piscinas" className={btnGlass}>Conhecer piscinas</a>
               </div>
             </div>
-            <ul className="animate-rise mt-14 flex flex-wrap gap-2 md:mt-20" style={{ animationDelay: "240ms" }}>
-              {[[Droplets, "Piscinas de fibra"], [Wrench, "Instalação especializada"], [HeartHandshake, "Atendimento próximo"]].map(([I, t]) => {
-                const Icon = I as typeof Droplets;
-                return (
-                  <li key={t as string} className="inline-flex items-center gap-2 rounded-full bg-deep/60 px-4 py-2 text-sm text-deep-foreground ring-1 ring-white/15 backdrop-blur-md">
-                    <Icon className="h-4 w-4 text-sun" aria-hidden />{t as string}
-                  </li>
-                );
-              })}
-            </ul>
+            <p className="animate-rise mt-14 flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-white/15 pt-6 text-sm text-deep-foreground/80 md:mt-20" style={{ animationDelay: "240ms" }}>
+              {["Piscinas de fibra", "Instalação especializada", "Atendimento próximo"].map((t, i) => (
+                <span key={t} className="inline-flex items-center gap-4">{i > 0 && <span className="h-1 w-1 rounded-full bg-sun" aria-hidden />}{t}</span>
+              ))}
+            </p>
           </div>
         </section>
 
         {/* TRUST */}
         <section aria-label="Diferenciais rápidos" className="border-b border-border">
-          <ul className="mx-auto grid max-w-7xl grid-cols-2 gap-6 px-5 py-10 md:grid-cols-4 lg:px-8">
-            {[[Droplets, "Piscinas de fibra"], [Wrench, "Instalação especializada"], [HeartHandshake, "Atendimento personalizado"], [ShieldCheck, "Orçamento sem compromisso"]].map(([I, t]) => {
-              const Icon = I as typeof Droplets;
-              return (
-                <li key={t as string} className="flex items-center justify-center gap-3 text-sm font-medium text-primary md:text-base">
-                  <Icon className="h-5 w-5 shrink-0 text-pool" aria-hidden />{t as string}
-                </li>
-              );
-            })}
+          <ul className="mx-auto grid max-w-7xl grid-cols-2 px-5 md:grid-cols-4 md:divide-x md:divide-border lg:px-8">
+            {["Piscinas de fibra", "Instalação especializada", "Atendimento personalizado", "Orçamento sem compromisso"].map((t) => (
+              <li key={t} className="px-2 py-8 text-center font-display text-lg font-medium tracking-[-0.02em] text-primary md:py-10">{t}</li>
+            ))}
           </ul>
         </section>
 
@@ -377,26 +367,31 @@ function Home() {
 
         {/* DIFERENCIAIS */}
         <section id="diferenciais" className="bg-deep py-24 md:py-32">
-          <div className="mx-auto max-w-7xl px-5 lg:px-8">
-            <SectionHead dark eyebrow="Diferenciais" title="Por que escolher a Aguazul Piscinas?"
-              text="Do primeiro contato à instalação, você conta com uma equipe que acompanha cada etapa." />
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-              {[
-                [Gem, "Qualidade", "Piscinas pensadas para unir beleza, resistência e praticidade."],
-                [HeartHandshake, "Atendimento", "Atendimento próximo para ajudar você a escolher a solução ideal."],
-                [Wrench, "Instalação", "Equipe preparada para acompanhar o projeto desde a escolha até a instalação."],
-                [Award, "Experiência", "Experiência no segmento de piscinas e atendimento em Santa Maria e região."],
-              ].map(([I, t, d]) => {
-                const Icon = I as typeof Gem;
-                return (
-                  <div key={t as string} className="reveal rounded-3xl bg-deep-card p-8 ring-1 ring-white/10 transition hover:ring-sun/40">
-                    <span className="flex h-11 w-11 items-center justify-center rounded-full bg-sun/15"><Icon className="h-5 w-5 text-sun" /></span>
-                    <h3 className="mt-8 text-2xl text-deep-foreground">{t as string}</h3>
-                    <p className="mt-2 text-sm leading-relaxed text-deep-foreground/65">{d as string}</p>
-                  </div>
-                );
-              })}
+          <div className="mx-auto grid max-w-7xl gap-14 px-5 md:grid-cols-12 lg:px-8">
+            <div className="reveal md:col-span-5 md:self-start md:sticky md:top-28">
+              <p className="text-sm font-medium text-sun">Diferenciais</p>
+              <h2 className="mt-3 text-4xl text-deep-foreground md:text-6xl">Por que escolher a Aguazul Piscinas?</h2>
+              <p className="mt-6 max-w-md text-lg text-deep-foreground/70">Do primeiro contato à instalação, você conta com uma equipe que acompanha cada etapa.</p>
+              <div className="mt-10 hidden aspect-[4/3] overflow-hidden rounded-[28px] md:block">
+                <PhotoSlot photo={MODELS[1].photos[0]} />
+              </div>
             </div>
+            <ol className="md:col-span-7">
+              {[
+                ["Qualidade", "Piscinas pensadas para unir beleza, resistência e praticidade."],
+                ["Atendimento", "Atendimento próximo para ajudar você a escolher a solução ideal."],
+                ["Instalação", "Equipe preparada para acompanhar o projeto desde a escolha até a instalação."],
+                ["Experiência", "Experiência no segmento de piscinas e atendimento em Santa Maria e região."],
+              ].map(([t, d], i) => (
+                <li key={t} className="reveal grid grid-cols-[3rem_1fr] gap-4 border-t border-white/15 py-10 last:border-b md:grid-cols-[5rem_1fr] md:py-12">
+                  <span className="pt-2 font-display text-sm font-medium text-sun">{String(i + 1).padStart(2, "0")}</span>
+                  <div>
+                    <h3 className="text-3xl text-deep-foreground md:text-5xl">{t}</h3>
+                    <p className="mt-4 max-w-md text-deep-foreground/65">{d}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
           </div>
         </section>
 
