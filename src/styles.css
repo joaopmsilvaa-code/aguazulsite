@@ -5,8 +5,8 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --font-display: "Instrument Serif", Georgia, serif;
-  --font-sans: "Work Sans", system-ui, sans-serif;
+  --font-display: "Inter Tight", system-ui, sans-serif;
+  --font-sans: "Inter", system-ui, sans-serif;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -30,6 +30,7 @@
   --color-sun-foreground: var(--sun-foreground);
   --color-pool: var(--pool);
   --color-deep: var(--deep);
+  --color-deep-card: var(--deep-card);
   --color-deep-foreground: var(--deep-foreground);
   --color-whatsapp: var(--whatsapp);
   --color-destructive: var(--destructive);
@@ -40,55 +41,58 @@
 }
 
 :root {
-  --radius: 0.5rem;
-  --background: oklch(0.99 0.01 220);
-  --foreground: oklch(0.27 0.06 246);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.24 0.06 255);
+  --radius: 1rem;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.24 0.07 262);
+  --card: oklch(0.975 0.008 255);
+  --card-foreground: oklch(0.24 0.07 262);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.24 0.06 255);
-  --primary: oklch(0.62 0.15 225);
+  --popover-foreground: oklch(0.24 0.07 262);
+  --primary: oklch(0.26 0.08 262);
   --primary-foreground: oklch(0.99 0 0);
-  --secondary: oklch(0.94 0.05 215);
-  --secondary-foreground: oklch(0.3 0.09 255);
-  --muted: oklch(0.965 0.008 230);
-  --muted-foreground: oklch(0.5 0.03 250);
-  --accent: oklch(0.93 0.06 210);
-  --accent-foreground: oklch(0.3 0.09 255);
-  --sun: oklch(0.86 0.17 91);
-  --sun-foreground: oklch(0.25 0.06 246);
-  --pool: oklch(0.67 0.15 222);
-  --deep: oklch(0.3 0.1 245);
-  --deep-foreground: oklch(0.97 0.01 230);
+  --secondary: oklch(0.96 0.012 255);
+  --secondary-foreground: oklch(0.24 0.07 262);
+  --muted: oklch(0.96 0.012 255);
+  --muted-foreground: oklch(0.5 0.03 260);
+  --accent: oklch(0.94 0.04 85);
+  --accent-foreground: oklch(0.3 0.06 70);
+  --sun: oklch(0.78 0.12 82);
+  --sun-foreground: oklch(0.22 0.07 262);
+  --pool: oklch(0.62 0.11 75);
+  --deep: oklch(0.2 0.07 263);
+  --deep-card: oklch(0.26 0.075 262);
+  --deep-foreground: oklch(0.98 0.005 255);
   --whatsapp: oklch(0.66 0.17 150);
   --destructive: oklch(0.58 0.22 27);
   --destructive-foreground: oklch(0.99 0 0);
-  --border: oklch(0.91 0.015 235);
-  --input: oklch(0.9 0.015 235);
-  --ring: oklch(0.68 0.13 225);
-  --shadow-soft: 0 1px 2px oklch(0.25 0.06 246 / 0.04), 0 12px 30px -18px oklch(0.25 0.06 246 / 0.18);
-  --shadow-lift: 0 24px 60px -28px oklch(0.25 0.06 246 / 0.38);
-  --overlay-hero: linear-gradient(90deg, oklch(0.25 0.1 245 / 0.98) 0%, oklch(0.3 0.11 238 / 0.88) 58%, oklch(0.38 0.12 228 / 0.72) 100%);
-  --photo-slot: repeating-linear-gradient(135deg, oklch(0.92 0.05 216) 0 18px, oklch(0.96 0.03 215) 18px 36px);
+  --border: oklch(0.9 0.015 260);
+  --input: oklch(0.88 0.02 260);
+  --ring: oklch(0.78 0.12 82);
+  --shadow-soft: 0 1px 2px oklch(0.24 0.07 262 / 0.05), 0 16px 40px -24px oklch(0.24 0.07 262 / 0.25);
+  --shadow-lift: 0 30px 70px -30px oklch(0.2 0.07 263 / 0.5);
+  --glow: 0 0 0 1px oklch(0.78 0.12 82 / 0.45), 0 0 60px -12px oklch(0.78 0.12 82 / 0.45), 0 0 160px -30px oklch(0.6 0.12 250 / 0.6);
+  --overlay-hero: linear-gradient(180deg, oklch(0.2 0.07 263 / 0) 45%, oklch(0.2 0.07 263 / 0.7) 100%);
+  --photo-slot: repeating-linear-gradient(135deg, oklch(0.94 0.015 255) 0 18px, oklch(0.97 0.01 255) 18px 36px);
 }
 
 @layer base {
   * { border-color: var(--color-border); }
-  html { scroll-behavior: smooth; }
+  html { scroll-behavior: smooth; color-scheme: light; }
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
   }
-  h1, h2, h3 { font-family: var(--font-display); letter-spacing: 0; }
+  h1, h2, h3 { font-family: var(--font-display); font-weight: 500; letter-spacing: -0.04em; line-height: 1.02; }
 }
 
 @utility shadow-soft { box-shadow: var(--shadow-soft); }
 @utility shadow-lift { box-shadow: var(--shadow-lift); }
 @utility bg-hero-overlay { background: var(--overlay-hero); }
 @utility bg-photo-slot { background: var(--photo-slot); }
-@utility eyebrow { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--pool); }
+@utility eyebrow { font-size: 0.875rem; font-weight: 500; color: var(--pool); }
+@utility shadow-glow { box-shadow: var(--glow); }
 
 @keyframes rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
 @utility animate-rise { animation: rise 0.6s cubic-bezier(.2,.7,.2,1) both; }

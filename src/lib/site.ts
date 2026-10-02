@@ -24,14 +24,30 @@ export type PoolModel = {
   photos: Photo[];
 };
 
-export const MODELS: PoolModel[] = [1, 2, 3].map((n) => ({
-  id: `modelo-${n}`,
-  photos: [{ alt: `Foto do modelo ${n}` }, { alt: `Foto do modelo ${n} — detalhe` }],
-}));
+export const HERO_PHOTO: Photo = {
+  src: "/images/piscina-destaque.png",
+  alt: "Piscina azul cercada de coqueiros em dia de sol",
+};
 
-export const GALLERY: Photo[] = Array.from({ length: 8 }, (_, i) => ({
-  alt: `Piscina de fibra instalada pela Aguazul — projeto ${i + 1}`,
-}));
+const HAWAI: Photo = { src: "/images/piscina-hawai.jpg", alt: "Piscina de fibra Aguazul modelo Hawaí instalada em área coberta" };
+const FLORENZA: Photo = { src: "/images/piscina-florenza.jpg", alt: "Piscina de fibra Aguazul modelo Florenza instalada em quintal com gramado" };
+
+export const MODELS: PoolModel[] = [
+  {
+    id: "hawai",
+    name: "Hawaí",
+    description: "Formato de linhas arredondadas em fibra azul. Combina com áreas cobertas e espaços mais compactos.",
+    photos: [HAWAI],
+  },
+  {
+    id: "florenza",
+    name: "Florenza",
+    description: "Formato clássico de cantos suaves, com degraus internos. Ideal para quintais com gramado e área de lazer.",
+    photos: [FLORENZA],
+  },
+];
+
+export const GALLERY: Photo[] = [HAWAI, FLORENZA];
 
 /** Avaliações reais do Google (trechos fornecidos). Adicione nomes quando disponíveis. */
 export const REVIEWS: { text: string; author?: string }[] = [
